@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "moodle-checker"
+version = "0.1.0"
+description = "Send presence online for student of work and studies program from University of Bordeaux"
+authors = ["Nig3l <nig3lpro@gmail.com>"]
+license = "MIT License"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+selenium = "^3.141.0"
+webdriver-manager = "^3.4.2"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+moodle_checker_install = "moodle_checker.moodle_checker:install_browser"
+moodle_checker = "moodle_checker.moodle_checker:cli"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
