@@ -6,7 +6,7 @@ This little script allow students of work and study program from University of B
 
 ## Installation
 
-Download wheel file from this [link](http://github.com)
+Download wheel file from [here]](https://github.com/Ni-g-3l/moodle-checker/releases)
 
 Then, open your terminal and run commands :
 
