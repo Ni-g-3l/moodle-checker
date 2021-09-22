@@ -20,7 +20,7 @@ class MoodleChecker:
     def __init__(self, user, password) -> None:
         options = Options()
         options.headless = True
-        self.__browser = webdriver.Firefox(options=options)
+        self.__browser = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
         self.__username = user
         self.__password = password
 
@@ -30,7 +30,7 @@ class MoodleChecker:
         if self.__access_course(): 
             self.__validate()
         else:
-            self.__self.__browser.quit()
+            self.__browser.quit()
 
     def __connect(self) -> None:
         print("INFO : Connection to 'https://cas.u-bordeaux.fr/cas/login'")

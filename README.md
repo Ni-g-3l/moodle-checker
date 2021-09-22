@@ -12,7 +12,7 @@ Then, open your terminal and run commands :
 
 ```bash
 python -m pip install <path_to_your_wheel>
-python -m moodle_checker_install
+moodle_checker_install
 ``` 
 
 ## Launch 
@@ -20,5 +20,5 @@ python -m moodle_checker_install
 In order to send your presence online you need to run the command :
 
 ```bash
-python -m moodle_checker --user=<your moodle username> --password=<your moodle password>
+moodle_checker --user=<your moodle username> --password=<your moodle password>
 ```
