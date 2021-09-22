@@ -15,7 +15,7 @@ This little script allow students of work and study program from University of B
 
 Download wheel file from [here](https://github.com/Ni-g-3l/moodle-checker/releases)
 
-Then, open your terminal and run commands :
+Then, open your terminal as administrator and run commands :
 
 ```bash
 python -m pip install <path_to_your_wheel>
