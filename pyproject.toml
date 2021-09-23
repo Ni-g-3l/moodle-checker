@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "moodle-checker"
-version = "0.1.1"
+version = "0.1.2"
 description = "Send presence online for student of work and studies program from University of Bordeaux"
 authors = ["Nig3l <nig3lpro@gmail.com>"]
 license = "MIT License"
