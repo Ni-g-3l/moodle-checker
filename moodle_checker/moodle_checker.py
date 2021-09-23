@@ -18,9 +18,6 @@ HOME = Path.home()
 MOODLE_CHECKER_FOLDER = HOME / '.moodle_checker'
 MOODLE_CHECKER_CREDENTIAL = MOODLE_CHECKER_FOLDER / '.credentials.json'
 
-def get_data_from_input(key : str) -> str:
-    return 
-
 
 def save_credential(credential_dict : dict) :
     with open(MOODLE_CHECKER_CREDENTIAL, 'w+') as file:
