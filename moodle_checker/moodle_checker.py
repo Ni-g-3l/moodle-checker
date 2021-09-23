@@ -1,4 +1,5 @@
 from pathlib import *
+import getpass
 import argparse
 import json
 import sys
@@ -13,9 +14,31 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from webdriver_manager.firefox import GeckoDriverManager
 
+HOME = Path.home()
+MOODLE_CHECKER_FOLDER = HOME / '.moodle_checker'
+MOODLE_CHECKER_CREDENTIAL = MOODLE_CHECKER_FOLDER / '.credentials.json'
+
+def get_data_from_input(key : str) -> str:
+    return 
+
+
+def save_credential(credential_dict : dict) :
+    with open(MOODLE_CHECKER_CREDENTIAL, 'w+') as file:
+        json.dump(credential_dict, file)
+
 
 def install_browser():
     GeckoDriverManager().install()
+
+    if not MOODLE_CHECKER_FOLDER.exists():
+        MOODLE_CHECKER_FOLDER.mkdir()
+
+    data = dict()
+    data['username'] = str(input(f'Please enter your Moodle username : '))
+    data['password'] = getpass.getpass('Please enter your Moodle password : ')
+
+    save_credential(data)
+    
 
 def get_key_from_dict(data : dict, key : str) -> str:
     value = data.get(key, None)
@@ -109,9 +132,10 @@ def cli():
     parser.add_argument('--credential', help='Path to json credentials file', default=False)
     parser.add_argument('--user', help='Moodle username', default=None)
     parser.add_argument('--password', help='Moodle password', default=None)
+    parser.add_argument('--save', help='Save credential in settings files', action='store_true')
     args = parser.parse_args(sys.argv[1:])
 
-    if not args.credential and (args.user is None and args.password is None):
+    if not args.credential and not MOODLE_CHECKER_CREDENTIAL.exists() and (args.user is None and args.password is None):
         parser.error('If credential file is not provided, --user and --password are mandatory')
         sys.exit(-1)
 
@@ -120,9 +144,14 @@ def cli():
 
     if args.credential:
         user, password = parse_credential(args.credential)
+    elif not args.credential and MOODLE_CHECKER_CREDENTIAL.exists():
+        user, password = parse_credential(MOODLE_CHECKER_CREDENTIAL)
     else:
         user, password = args.user, args.password
 
     checker = MoodleChecker(user, password)
     checker.send_presence()
 
+    if args.save:
+        credential = { 'username' : user, 'password' : password}
+        save_credential(credential)

@@ -45,11 +45,24 @@ moodle_checker_install
 
 ## Launch 
 
-In order to send your presence online you need to run the command :
+### Send presence with username and password :
 
 ```bash
 moodle_checker --user=<your moodle username> --password=<your moodle password>
 ```
+
+### Send presence with credential json file :
+
+```bash
+moodle_checker --credential=<path to your json file>
+```
+
+### Send presence with saved credential : 
+
+```bash
+moodle_checker
+```
+**Note : if you use the argument *--save* your credentials will be save into moodle_checker settings.**
 
 ## Licenses
 
