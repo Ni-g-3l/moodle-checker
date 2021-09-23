@@ -1,15 +1,15 @@
-import sys
 import argparse
+import sys
 
 from selenium import webdriver
-from webdriver_manager.firefox import GeckoDriverManager
-
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+from webdriver_manager.firefox import GeckoDriverManager
 
 
 def install_browser():
@@ -33,7 +33,7 @@ class MoodleChecker:
             self.__browser.quit()
 
     def __connect(self) -> None:
-        print("INFO : Connection to 'https://cas.u-bordeaux.fr/cas/login'")
+        print("INFO : Connection to 'https://cas.u-bordeaux.fr/cas/login'", end='')
         
         self.__browser.get('https://cas.u-bordeaux.fr/cas/login')
         login_input = self.__browser.find_element_by_xpath('//*[@id="username"]')
@@ -76,11 +76,21 @@ class MoodleChecker:
 
 def cli():
     print("INFO : Parsing args")
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--user', help='Moodle username', required=True)
-    parser.add_argument('--password', help='Moodle password', required=True)
-    args = parser.parse_args(sys.argv[1:])
     
+    parser = argparse.ArgumentParser(
+        description='This little script allow students of work and study program from University of Bordeaux to send their presence online.',
+        epilog='If not credential file provided, --user and --password are mandatory'
+    )
+
+    parser.add_argument('--credential', help='Path to json credentials file', default=False)
+    parser.add_argument('--user', help='Moodle username', default=None)
+    parser.add_argument('--password', help='Moodle password', default=None)
+    args = parser.parse_args(sys.argv[1:])
+
+    if not args.credential and (args.user is None and args.password is None):
+        parser.error('If credential file is not provided, --user and --password are mandatory')
+        sys.exit(-1)
+
     checker = MoodleChecker(args.user, args.password)
     checker.send_presence()
 
