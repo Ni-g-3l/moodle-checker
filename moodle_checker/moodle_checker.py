@@ -1,4 +1,6 @@
+from pathlib import *
 import argparse
+import json
 import sys
 
 from selenium import webdriver
@@ -14,6 +16,28 @@ from webdriver_manager.firefox import GeckoDriverManager
 
 def install_browser():
     GeckoDriverManager().install()
+
+def get_key_from_dict(data : dict, key : str) -> str:
+    value = data.get(key, None)
+    
+    if value is None:
+        print(f"ERROR : {key} key is missing into credential file")
+        sys.exit(-1)
+    
+    return value
+
+def parse_credential(credential_path : str):
+    filepath = Path(credential_path)
+    
+    if not (filepath.exists() and filepath.is_file):
+        print("ERROR : Credential file provided isn't exists")
+        sys.exit(-1)
+
+    with open(filepath, 'r') as file:
+        data = json.load(file)
+        user = get_key_from_dict(data, 'username')
+        password = get_key_from_dict(data, 'password')
+        return user, password
 
 class MoodleChecker:
 
@@ -33,7 +57,7 @@ class MoodleChecker:
             self.__browser.quit()
 
     def __connect(self) -> None:
-        print("INFO : Connection to 'https://cas.u-bordeaux.fr/cas/login'", end='')
+        print("INFO : Connection to 'https://cas.u-bordeaux.fr/cas/login'")
         
         self.__browser.get('https://cas.u-bordeaux.fr/cas/login')
         login_input = self.__browser.find_element_by_xpath('//*[@id="username"]')
@@ -91,6 +115,14 @@ def cli():
         parser.error('If credential file is not provided, --user and --password are mandatory')
         sys.exit(-1)
 
-    checker = MoodleChecker(args.user, args.password)
+    user = None
+    password = None
+
+    if args.credential:
+        user, password = parse_credential(args.credential)
+    else:
+        user, password = args.user, args.password
+
+    checker = MoodleChecker(user, password)
     checker.send_presence()
 
