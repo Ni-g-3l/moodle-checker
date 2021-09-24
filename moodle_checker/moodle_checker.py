@@ -93,8 +93,7 @@ class MoodleChecker:
 
         login_input.send_keys(self.__username)
         password_input.send_keys(self.__password)
-        submit_button = self.__browser.find_element_by_xpath('//input[@type="submit" and @name="submit" and '
-                                                             '@value="SE CONNECTER"]')
+        submit_button = self.__browser.find_element_by_xpath('/html/body/div/div/div/div[3]/form/div/div[1]/div[3]/input[3]')
         submit_button.click()
         self.__browser.get('https://fad.u-bordeaux.fr/login/index.php')
         college_choice = self.__browser.find_element_by_xpath('//*[@id="userIdPSelection_iddtext"]')
