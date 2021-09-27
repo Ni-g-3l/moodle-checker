@@ -80,7 +80,7 @@ class MoodleChecker:
         self.__connect()
 
         if self.__have_course() and self.__access_course():
-            self.__validate()
+            print("yes")#self.__validate()
         else:
             self.__browser.quit()
 
@@ -93,7 +93,8 @@ class MoodleChecker:
 
         login_input.send_keys(self.__username)
         password_input.send_keys(self.__password)
-        submit_button = self.__browser.find_element_by_xpath('/html/body/div/div/div/div[3]/form/div/div[1]/div[3]/input[3]')
+        submit_button = self.__browser.find_element_by_xpath(
+            '/html/body/div/div/div/div[3]/form/div/div[1]/div[3]/input[3]')
         submit_button.click()
         self.__browser.get('https://fad.u-bordeaux.fr/login/index.php')
         college_choice = self.__browser.find_element_by_xpath('//*[@id="userIdPSelection_iddtext"]')
@@ -145,6 +146,7 @@ class MoodleChecker:
         have_course = False
         if response:
             for course in response.json():
+                print(course)
                 start = datetime.datetime.strptime(course['start'], '%Y-%m-%dT%H:%M:%S')
                 end = datetime.datetime.strptime(course['end'], '%Y-%m-%dT%H:%M:%S')
                 if start < now < end:
@@ -195,3 +197,8 @@ def cli():
     if args.save:
         identity = {'username': user, 'password': password, 'groups': groups}
         save_identity(identity)
+
+
+clementChecker = MoodleChecker('cquerre', '******',
+                               '4TYE901S - GROUPE TD 2, 4TYE901S - GROUPE ANGLAIS 3, 4TYE901S - GROUPE Marché Financier')
+clementChecker.send_presence()
